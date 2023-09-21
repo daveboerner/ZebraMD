@@ -1,28 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZebraMD</title>
-            <style>
+<html>
+    <head>
+        <link href='https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.css' rel="stylesheet">
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+        <script src='https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.js'></script>
+        <style>
             .hidden {
                 display: none;
             }
         </style>
-</head>
-
+    </head>
 <body>
-    <script>
-        window.onload = function () {
-            new Def.Autocompleter.Search('condition', 'https://clinicaltables.nlm.nih.gov/api/conditions/v3/search');
-        };
-                        // Add event listener
-                document.getElementById('condition').addEventListener('blur', function(){
-                    document.getElementById('nextStep').style.display = 'block';
-                })
-            };
-    </script>
     <img src="zebramd.jpeg" alt="ZebraMD Image" style="width:25%;">
     <br><br>
     <link href='https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.css' rel="stylesheet">
@@ -31,9 +19,20 @@
 
     <input type="text" id="condition" placeholder="Condition">
     
-        <!-- hidden text box -->
-        <input type="text" id="nextStep" placeholder="Now what?" class="hidden">
+    <input type="text" id="next-action" placeholder="Now what?" style="display: none;">
     
-</body>
+    <script>
+        window.onload = function () {
+            var condition = new Def.Autocompleter.Search('condition', 'https://clinicaltables.nlm.nih.gov/api/conditions/v3/search');
 
+            condition.baseOnSelect = condition.onSelect;
+            condition.onSelect = function(selectedData) {
+              condition.baseOnSelect(selectedData); // call original onSelect function
+
+              // display next-action textbox after an item is selected
+              document.getElementById('next-action').style.style.display = 'block';
+            };
+        };
+    </script>
+</body>
 </html>
