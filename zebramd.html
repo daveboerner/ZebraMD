@@ -17,16 +17,24 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
     <script src='https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.js'></script>
 
+    <p>Select a disease below.</p>
     <input type="text" id="condition" placeholder="Condition">
-    
+    <br/><br/>
     <input type="text" id="next-action" placeholder="Now what?" style="display: none;">    
     <script>
         window.onload = function () {
             var condition = new Def.Autocompleter.Search('condition', 'https://clinicaltables.nlm.nih.gov/api/conditions/v3/search');
+            var conditionElement = document.getElementById('condition');
+                var conditionValue = conditionElement.value;
+                var nextActionElement = document.getElementById('next-action');
+    
+                setInterval(function() {
+                    if (conditionElement.value !== conditionValue) {
+                        conditionValue = conditionElement.value;
+                        nextActionElement.style.display = 'block';
+                    }
+                }, 500); // checks every 500 ms
 
-            condition.afterUpdate = function(element, selectedData) {
-                    document.getElementById('next-action').style.display = 'block';
-                };
         };
     </script>
 </body>
