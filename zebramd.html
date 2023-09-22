@@ -19,19 +19,14 @@
 
     <input type="text" id="condition" placeholder="Condition">
     
-    <input type="text" id="next-action" placeholder="Now what?" style="display: none;">
-    
+    <input type="text" id="next-action" placeholder="Now what?" style="display: none;">    
     <script>
         window.onload = function () {
             var condition = new Def.Autocompleter.Search('condition', 'https://clinicaltables.nlm.nih.gov/api/conditions/v3/search');
 
-            condition.baseOnSelect = condition.onSelect;
-            condition.onSelect = function(selectedData) {
-              condition.baseOnSelect(selectedData); // call original onSelect function
-
-              // display next-action textbox after an item is selected
-              document.getElementById('next-action').style.style.display = 'block';
-            };
+            condition.afterUpdate = function(element, selectedData) {
+                    document.getElementById('next-action').style.display = 'block';
+                };
         };
     </script>
 </body>
